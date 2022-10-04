@@ -2,6 +2,11 @@
 // request express
 const express = require('express');
 // instantiate the server
+
+// step 9 - after creating heroku server which is here https://dry-reef-02487.herokuapp.com/
+// heroku uses port 80 which is known as an environment, if for some reason that port is not available - use hardcoded 3002
+const PORT = process.env.PORT || 3002;
+
 const app = express();
 
 // step 3 - create a route that the front-end can request data from
@@ -60,6 +65,12 @@ app.get('/api/animals', (req, res) => {
 
 
 // step 2 - tell the server to listen for requests
+/*
 app.listen(3002, () => {
     console.log(`API server now on port 3002`);
 }) 
+*/
+// step 10 - update the port that heroku hosts at and set hardcoded 3002 as a backup
+app.listen(PORT, () => {
+    console.log(`API server is now on port ${PORT}`);
+})
