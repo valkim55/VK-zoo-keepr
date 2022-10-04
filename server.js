@@ -50,6 +50,12 @@ function filterByQuery(query, animalsArray) {
     return filteredResults;
 }
 
+// step 12 - create function findById() that will take req.param (which is ID) and animals array and return a single animal based on its ID
+function findById(id, animalsArray) {
+    const result = animalsArray.filter(animal => animal.id === id)[0];
+    return result;
+}
+
 
 // step 4 - add the route
 // step 5 - replace send('Hello Poogeon') method in response with json(animals)
@@ -63,6 +69,16 @@ app.get('/api/animals', (req, res) => {
     res.json(results);
 });
 
+//step 11 - add another route based on request object's parameter, which is animals' ID. Since ID is unique there won't be any query and the result will be just one animal
+// step 12 - add 404 error handling, in case there's no animal with requested id - response will show a 404 error, URL will be http://localhost:3002/api/animals/3
+app.get('/api/animals/:id', (req, res) => {
+    const result = findById(req.params.id, animals);
+        if(result) {
+            res.json(result);
+        } else {
+            res.send(404);
+        }
+});
 
 // step 2 - tell the server to listen for requests
 /*
