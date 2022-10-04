@@ -80,6 +80,11 @@ app.get('/api/animals/:id', (req, res) => {
         }
 });
 
+
+
+
+
+
 // step 2 - tell the server to listen for requests
 /*
 app.listen(3002, () => {
