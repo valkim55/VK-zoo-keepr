@@ -3,11 +3,21 @@
 const express = require('express');
 // instantiate the server
 
+// step 19 - in order to actually add a new animal object to the json file we will need to access file system
+const fs = require('fs');
+const path = require('path');
+
+
 // step 9 - after creating heroku server which is here https://dry-reef-02487.herokuapp.com/
 // heroku uses port 80 which is known as an environment, if for some reason that port is not available - use hardcoded 3002
 const PORT = process.env.PORT || 3002;
 
 const app = express();
+
+//step 14 - parse incoming string or array data that was POSTed to the server
+app.use(express.urlencoded({ extended: true }));
+// parse incoming json data
+app.use(express.json());
 
 // step 3 - create a route that the front-end can request data from
 const {animals} = require('./data/animals.json')
@@ -56,6 +66,43 @@ function findById(id, animalsArray) {
     return result;
 }
 
+// step 15 - handle taking the data from req.body and adding it to animals array
+function createNewAnimal(body, animalsArray) {
+    //console.log(body);
+    // return finished code to post route for response
+    //return body;
+
+    // step 18 - after new animal object (body) was POSTed on the server and assigned with an id and wrapped into a variable - animal, push that new object to animals array
+    const animal = body;
+    animalsArray.push(animal);
+
+    // step 20 - use 'fs' and 'path' modules to write the new object into json file
+    fs.writeFileSync(
+            path.join(__dirname, './data/animals.json'),
+            JSON.stringify({animals: animalsArray}, null, 2) // updating existing json file, null means dont edit existing data, 2 means create white space between the values to make it readable
+    );
+    return animal;
+}
+
+
+// step 21 - validate the data that is being POSTed to the server, make sure: 1 - data exists, 2 - its the correct data type
+function validateAnimal(animal) {
+    if(!animal.name || typeof animal.name !== 'string') {
+        return false;
+    }
+    if(!animal.species || typeof animal.species !== 'string') {
+        return false;
+    }
+    if(!animal.diet || typeof animal.diet !== 'string') {
+        return false; 
+    }
+    if(!animal.personalityTraits || !Array.isArray(animal.personalityTraits)) {
+        return false;
+    }
+    return true;
+}
+
+
 
 // step 4 - add the route
 // step 5 - replace send('Hello Poogeon') method in response with json(animals)
@@ -80,8 +127,26 @@ app.get('/api/animals/:id', (req, res) => {
         }
 });
 
+// step 13 - add a post() method to enable users to store data in a server
+app.post('/api/animals', (req, res) => {
+    // req.body is where our incoming content will be
+    //console.log(req.body);
+    //res.json(req.body);
 
-
+    // step 16 - set id based on what the next index of the array will be
+    req.body.id = animals.length.toString();
+    
+    /* step 22 - before creating new data and adding it to a server, pass this data through validateAnimal function, where animal parameter is the content of req.body, 
+    and the properties of 'animal' will run through a validation check*/
+    // if any data in req.body is incorrect - send 404 back
+    if(!validateAnimal(req.body)) {
+        res.status(404).send('the animal is not properly formatted');
+    } else {
+        // step 17 - after a new animal has been added to the server and assigned an id in step 16 we can call the function that will update json file in ths directory by adding a new animal object
+        const animal = createNewAnimal(req.body, animals);
+        res.json(animal);
+    }
+});
 
 
 
