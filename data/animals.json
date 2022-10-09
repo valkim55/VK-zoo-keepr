@@ -108,6 +108,34 @@
         "hungry"
       ],
       "id": "10"
+    },
+    {
+      "name": "Pootty",
+      "species": "alien",
+      "diet": "carnivore",
+      "personalityTraits": [
+        "hungry",
+        "goofy"
+      ],
+      "id": "11"
+    },
+    {
+      "name": "mowmow",
+      "species": "cute",
+      "diet": "herbivore",
+      "personalityTraits": [
+        "loving"
+      ],
+      "id": "12"
+    },
+    {
+      "name": "poogeon",
+      "species": "poo",
+      "diet": "folivore",
+      "personalityTraits": [
+        "zany"
+      ],
+      "id": "13"
     }
   ]
 }

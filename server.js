@@ -10,7 +10,7 @@ const path = require('path');
 
 // step 9 - after creating heroku server which is here https://dry-reef-02487.herokuapp.com/
 // heroku uses port 80 which is known as an environment, if for some reason that port is not available - use hardcoded 3002
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3001;
 
 const app = express();
 
@@ -18,6 +18,9 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 // parse incoming json data
 app.use(express.json());
+
+// step 24 - add another middleware to instruct the server to make files in 'public' folder readily available whenever the api is called
+app.use(express.static('public')); 
 
 // step 3 - create a route that the front-end can request data from
 const {animals} = require('./data/animals.json')
@@ -149,14 +152,40 @@ app.post('/api/animals', (req, res) => {
 });
 
 
+// add a new route step 23 - make index.html served from Express server
+// endpoint "/" brings you to the root route of the server, used to create a homepage for a server
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
+})
+
+// step 24 was to add the fetch request to script.js that communicates with app.post method
+
+// step 25 - add routes  for other .html pages, the endpoint is /animals
+app.get('/animals', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/animals.html'));
+})
+
+// step 26 - add the route for the zookeepers.html page
+app.get('/zookeepers', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/zookeepers.html'));
+})
+
+// step 27 - add a 'wildcard' - any route that wasn't defined will fall under this request and will the homepage as response (/about, /contact, /membership will redirect to homepage)
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
+})
+
 
 // step 2 - tell the server to listen for requests
 /*
 app.listen(3002, () => {
-    console.log(`API server now on port 3002`);
+    console.log(`API server now on port 3001`);
 }) 
 */
-// step 10 - update the port that heroku hosts at and set hardcoded 3002 as a backup
+// step 10 - update the port that heroku hosts at and set hardcoded 3001 as a backup
 app.listen(PORT, () => {
     console.log(`API server is now on port ${PORT}`);
 })
+
+
+
