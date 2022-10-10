@@ -1,7 +1,7 @@
 // animals APIs were moved here from server.js
 
 const router = require('express').Router();
-const {filterByQuery, findById, createNewAnimal, validateAnimal} = require('../../lib/animals');
+const { filterByQuery, findById, createNewAnimal, validateAnimal } = require('../../lib/animals');
 const {animals} = require('../../data/animals.json');
 
 // step 4 - add the route
@@ -20,11 +20,11 @@ router.get('/animals', (req, res) => {
 // step 12 - add 404 error handling, in case there's no animal with requested id - response will show a 404 error, URL will be http://localhost:3002/api/animals/3
 router.get('/animals/:id', (req, res) => {
     const result = findById(req.params.id, animals);
-        if(result) {
-            res.json(result);
-        } else {
-            res.send(404);
-        }
+    if(result) {
+        res.json(result);
+    } else {
+        res.send(404);
+    }
 });
 
 // step 13 - add a post() method to enable users to store data in a server

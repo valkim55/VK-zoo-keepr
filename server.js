@@ -1,17 +1,6 @@
-
-// step 34 - add add the path to apiRoutes.js and htmlRoutes.js
-const apiRoutes = require('./routes/apiRoutes');
-const htmlRoutes = require('./routes/htmlRoutes');
-
 // step 1 - setup a server to accept incoming requests
 // request express
 const express = require('express');
-// instantiate the server
-const app = express();
-
-// step 19 - in order to actually add a new animal object to the json file we will need to access file system
-const fs = require('fs');
-const path = require('path');
 
 
 // step 9 - after creating heroku server which is here https://dry-reef-02487.herokuapp.com/
@@ -19,22 +8,37 @@ const path = require('path');
 const PORT = process.env.PORT || 3001;
 
 
+// instantiate the server
+const app = express();
+
+
+// step 34 - add add the path to apiRoutes.js and htmlRoutes.js
+const apiRoutes = require('./routes/apiRoutes');
+const htmlRoutes = require('./routes/htmlRoutes');
+//const animals = require('./lib/animals');
+
+// step 19 - in order to actually add a new animal object to the json file we will need to access file system
+//const fs = require('fs');
+//const path = require('path');
 
 
 //step 14 - parse incoming string or array data that was POSTed to the server
 app.use(express.urlencoded({ extended: true }));
 // parse incoming json data
 app.use(express.json());
+// step 24 - add another middleware to instruct the server to make files in 'public' folder readily available whenever the api is called
+app.use(express.static('public')); 
+
+
 
 //step 35 - 
 app.use('/api', apiRoutes);
 app.use('/', htmlRoutes);
 
-// step 24 - add another middleware to instruct the server to make files in 'public' folder readily available whenever the api is called
-app.use(express.static('public')); 
+
 
 // step 3 - create a route that the front-end can request data from
-const {animals} = require('./data/animals.json')
+//const {animals} = require('./data/animals.json')
 
 
 

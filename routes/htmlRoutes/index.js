@@ -1,9 +1,6 @@
 const path = require('path');
 const router = require('express').Router();
-const animalRoutes = require('../apiRoutes/animalRoutes');
-// moved here from server.js
 
-router.use(animalRoutes);
 
 // add a new route step 23 - make index.html served from Express server
 // endpoint "/" brings you to the root route of the server, used to create a homepage for a server
